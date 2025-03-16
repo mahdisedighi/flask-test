@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask WebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <h2>ارتباط WebSocket با Flask</h2>
+    <input type="text" id="message" placeholder="پیام خود را وارد کنید">
+    <button onclick="sendMessage()">ارسال</button>
+    <ul id="messages"></ul>
+
+    <script>
+        var socket = io("http://localhost:5000");
+
+        socket.on("response", function(data) {
+            let li = document.createElement("li");
+            li.textContent = data.message;
+            document.getElementById("messages").appendChild(li);
+        });
+
+        function sendMessage() {
+            let message = document.getElementById("message").value;
+            socket.emit("message", message);
+            document.getElementById("message").value = "";
+        }
+    </script>
+</body>
+</html>
